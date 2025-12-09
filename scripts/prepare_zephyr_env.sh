@@ -15,8 +15,10 @@ if [ ! -d ".venv" ]; then
     if [[ ! -z "$CI" ]] || [[ -f /.dockerenv ]]; then
         # include global packages when run in CI or docker container
         python3 -m venv .venv --system-site-packages
+        echo "In CI or Docker environment"
     else
         python3 -m venv .venv
+        echo "NOT inCI or Docker environment"
     fi
 fi
 
@@ -28,6 +30,7 @@ if [ -z "$(python3 -m pip freeze -r requirements.txt 2>&1 | grep "not installed"
     echo "Project dependencies installed"
 else
     echo "Installing missing dependencies"
+    cat requirements.txt
     python3 -m pip install pip setuptools --upgrade
     python3 -m pip install -r requirements.txt
 fi
